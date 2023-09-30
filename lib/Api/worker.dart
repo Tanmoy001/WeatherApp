@@ -91,7 +91,7 @@ class worker {
       airSeed = "NA";
       description = "NA";
       main = "NA";
-      //icon = 'NA';
+      icon = 'NA';
     }
   }
 }

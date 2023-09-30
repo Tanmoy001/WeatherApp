@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:location/location.dart';
 import 'package:untitled/Api/worker.dart';
 
 class Loading extends StatefulWidget {
@@ -10,6 +11,41 @@ class Loading extends StatefulWidget {
 }
 
 class _LoadingState extends State<Loading> {
+
+  final Location loaction = Location();
+
+  PermissionStatus _permissionStatus = PermissionStatus.denied;
+  LocationData _locationData = LocationData.fromMap({'latitude': 0.1, 'longitude': 0.1}); // Initialize with a default location
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    requestLocationPermission();
+  }
+  Future<void> requestLocationPermission() async{
+    final PermissionStatus status = await loaction.requestPermission();
+    setState(() {
+      _permissionStatus=status;
+      debugPrint(_permissionStatus.toString());
+    });
+    if(status==PermissionStatus.granted){
+      getLocation();
+    }
+  }
+  Future<void> getLocation() async {
+    try {
+      final LocationData locationData = await loaction.getLocation();
+      setState(() {
+        _locationData = locationData;
+        debugPrint(_locationData.toString());
+      });
+    } catch (e) {
+      debugPrint('Error getting location: $e');
+    }
+  }
+
+
   String temperature = "";
   String hum = "";
   String air_speed = "";
@@ -33,6 +69,7 @@ class _LoadingState extends State<Loading> {
     icon = instance.icon;
     name = instance.name;
     debugPrint("$temperature asdfsdf");
+    Future.delayed(const Duration(seconds: 2), () {
     Navigator.pushReplacementNamed(context, '/home', arguments: {
       "temp_value": temperature,
       "hum_value": hum,
@@ -41,6 +78,7 @@ class _LoadingState extends State<Loading> {
       "main": main,
       "icon": icon,
       "name": name,
+    });
     });
   }
 

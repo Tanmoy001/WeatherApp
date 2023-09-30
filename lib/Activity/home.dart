@@ -16,7 +16,7 @@ TextEditingController search = TextEditingController();
     final random =  Random();
     var city = city_name[random.nextInt(city_name.length)];
    Map<dynamic, dynamic>? info = ModalRoute.of(context)?.settings.arguments as Map<dynamic, dynamic>?;
-    String icon = (info?['icon'] ?? 'NA');
+    String icon = (info?['icon'] ?? '//openweathermap.org/img/wn/10d@2x.png');
     String temp =(info?['temp_value'] ??'NA');
     String humidity =(info?['hum_value'] ?? 'NA');
     String airspeed =(info?['air_speed_value'] ??'NA');
@@ -36,6 +36,8 @@ TextEditingController search = TextEditingController();
       body: SingleChildScrollView(
         child: SafeArea(
           child: Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topRight,
